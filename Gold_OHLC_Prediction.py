@@ -27,12 +27,13 @@ from tensorflow.keras.layers import LSTM,GRU,Dense,Dropout
 from sklearn.metrics import mean_squared_error,mean_absolute_error
 
 # %% Data loading
-data_ext = pd.read_csv(r"gold_price.csv",
+data_ext = pd.read_csv(r"C:\Users\SURUTHI S\Desktop\OM SAI RAAM TSA OUTPUT PREDICTION\gold_price.csv",
                        parse_dates=['date'], index_col='date')
 
 str_cols = ['price','open','high','low']
 for col in str_cols:
   data_ext[col] = pd.to_numeric(data_ext[col].str.replace(',', ''))
+
 
 
 data_ext.dtypes
@@ -48,7 +49,7 @@ data_ext.isna().sum()
 start_date = data_ext.index.min()
 end_date = data_ext.index.max()
 
-def check_date_gaps(df):
+def check_date_gaps(df,start_date=data_ext.index.min(),end_date=data_ext.index.max()):
   date_range = pd.date_range(start=start_date, end=end_date)
 
   if len(df.index) == len(date_range) and all(df.index == date_range):
@@ -61,6 +62,7 @@ def check_date_gaps(df):
 
 check_date_gaps(data_ext)
 
+# len(data_ext)
 
 date_range = pd.date_range(start=start_date, end=end_date)
 
@@ -75,16 +77,18 @@ check_date_gaps(data_ext)
 
 data_ext = data_ext['2023-01-01':]
 
+check_date_gaps(data_ext)
+
+
 data_description = data_ext.describe()
 
 data_ext.head()
 data_ext.tail()
 
+
 data_ext.rename(columns={'index':'date','open':'Open','high':'High','low':'Low','price':'Close','volume':'Volume'},inplace=True)
 
 data = data_ext.reset_index()
-
-
 
 data.tail()
 
@@ -307,7 +311,8 @@ plt.ylabel('Loss (Mean Squared Error)')
 plt.legend()
 plt.show()
 
-
+lstm_result.to_csv("LSTM Predictions.csv")
+lstm_diff.to_csv("Avg LSTM Actual-Pred.csv")
 
 
 # %% Further Statistical Analysis
