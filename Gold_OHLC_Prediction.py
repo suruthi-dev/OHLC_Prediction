@@ -34,7 +34,6 @@ str_cols = ['price','open','high','low']
 for col in str_cols:
   data_ext[col] = pd.to_numeric(data_ext[col].str.replace(',', ''))
 
-data_ext.rename(columns={'index':'date','open':'Open','high':'High','low':'Low','price':'Close','volume':'Volume'},inplace=True)
 
 data_ext.dtypes
 
@@ -81,9 +80,11 @@ data_description = data_ext.describe()
 data_ext.head()
 data_ext.tail()
 
-
+data_ext.rename(columns={'index':'date','open':'Open','high':'High','low':'Low','price':'Close','volume':'Volume'},inplace=True)
 
 data = data_ext.reset_index()
+
+
 
 data.tail()
 
